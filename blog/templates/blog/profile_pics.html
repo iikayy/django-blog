@@ -1,0 +1,47 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title%}Clean Blog - Start Bootstrap Theme {% endblock %}
+
+{% block style %} {% endblock %}
+
+{% block content %}
+
+<header class="masthead" style="background-image: url('{% static "assets/img/edit-bg.jpg" %}')">
+  <div class="container position-relative px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <div class="page-heading">
+              <h2>Upload Picture</h2>
+            </div>
+          </div>
+      </div>
+  </div>
+</header>
+
+<style>
+    .form-center input, 
+    .form-center select, 
+    .form-center textarea {
+        width: 100%; /* Increase the width to 100% of the parent container */
+        max-width: 600px; /* Set a maximum width to control the box length */
+    }
+   
+  </style>
+
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <form action="{% url "profile_pics" %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                     {{form}}
+                    <button type="submit"> Send </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</article>
+
+{% endblock %}

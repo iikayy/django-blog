@@ -1,0 +1,111 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title%}Clean Blog - Start Bootstrap Theme {% endblock %}
+
+{% block style %} {% endblock %}
+
+{% block content %}
+
+{% include "blog/navbar/navbar.html" %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{post.image.url}}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h2>{{post.title}}</h2>
+                            <h3 class="subheading">{{post.subtitle}}</h3>
+                            <span class="meta">
+                                Posted by
+                                <a href="#!">{{post.author.username}}</a>
+                                {{post.date}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <style>
+            .commenterImage img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }            
+
+        </style>
+        <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        {{post.body}}
+
+                        
+                        <div class="d-flex justify-content-end mb-4">
+                        {% if user.is_authenticated %}
+                            <a
+                              class="btn btn-primary float-right"
+                              href="{% url "edit-post" post.pk %}"
+                              >EDIT POST</a
+                            >      
+                        </div>
+
+                        <div class="d-flex justify-content-end mb-4"><a class="btn btn-danger" href="{% url 'delete' post.pk %}" >DELETE POST</a>
+                        {% endif %}
+                        </div>
+                        
+
+                          <div class="comment">
+                            <ul class="commentList">
+                                <!-- Show all comments -->
+                                {% for comment in comments %}
+                                <li>
+                                    <div class="commenterImage">
+                                        {% if comment.user.user_pics and comment.user.user_pics.profile_pic %}
+                                            {% if comment.user == request.user %}
+                                                <a href="{% url 'profile_pics_with_pk' comment.user.user_pics.pk %}">
+                                                    <img src="{{ comment.user.user_pics.profile_pic.url }}" alt="Profile Picture"/>
+                                                </a>
+                                            {% else %}
+                                                <img src="{{ comment.user.user_pics.profile_pic.url }}" alt="Profile Picture"/>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if comment.user == request.user %}
+                                                <a href="{% url 'profile_pics' %}">
+                                                    <img src="{% static 'assets/img/default-profile.jpg' %}" alt="Default Profile Picture"/>
+                                                </a>
+                                            {% else %}
+                                                <img src="{% static 'assets/img/default-profile.jpg' %}" alt="Default Profile Picture"/>
+                                            {% endif %}
+                                        {% endif %}
+                                        {{ comment.text|safe }}
+                                    </div>
+                                    <span class="sub-text">{{ comment.user }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        
+                    {% if user.is_authenticated %}
+                    <div>
+                        <form action="{% url "post" post.slug %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for form_field in comment_form %}
+                            <div class="form-center">
+                                {{ form_field.label_tag }}
+                            </div>
+                            <div class="form-center">
+                                {{form_field}}
+                            </div>
+                            {% endfor %}
+                            <button type="submit"> Submit </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+{% endblock %}

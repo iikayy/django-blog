@@ -1,0 +1,59 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title%}  {% endblock %}
+
+{% block style %} {% endblock %}
+
+{% block content %}
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{% static "assets/img/edit-bg.jpg" %}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                  <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                            <h1>Edit Post</h1>
+                            <span class="subheading"
+                            >You're going to make a great blog post!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <style>
+            .form-center input, 
+            .form-center select, 
+            .form-center textarea {
+                width: 100%; /* Increase the width to 100% of the parent container */
+                max-width: 600px; /* Set a maximum width to control the box length */
+            }
+           
+        </style>
+        <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <form action="{% url "edit-post" post.pk %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for form_field in form %}
+                            <div class="form-center">
+                             {{ form_field.label_tag }} 
+                            </div>
+                            <div class="form-center">
+                                {{form_field}}
+                            </div>
+                            <div class="form-center">
+                                {{form_field.errors}}
+                            </div>
+                            {% endfor %} 
+                            
+                            <button type="submit"> Send </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+{% endblock %}

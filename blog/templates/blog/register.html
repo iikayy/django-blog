@@ -1,0 +1,65 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title%}Clean Blog - Start Bootstrap Theme {% endblock %}
+
+{% block style %} {% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<header
+  class="masthead"
+  style="background-image: url( 'https://images.unsplash.com/photo-1611532736576-78f7b69f4b9d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
+>
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="page-heading">
+          <h1>Register</h1>
+          <span class="subheading">Start Contributing to the Blog!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<style>
+    .form-center input, 
+    .form-center select, 
+    .form-center textarea {
+        width: 100%; /* Increase the width to 100% of the parent container */
+        max-width: 600px; /* Set a maximum width to control the box length */
+
+    }
+    .form-center .error {
+        color: red;
+        font-size: 15px;
+        margin-left: 10px;
+    }
+   
+</style>
+<main class="mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+      <!--Rendering the registration form here-->
+      <form method="post">
+        {% csrf_token %}
+        {% for form_field in form %}
+        <div class="form-center">
+            {{form_field.label_tag}}
+        </div>
+        <div class="form-center">
+            {{form_field}}
+            <span class="error">{{form_field.errors}}</span>
+        </div>
+        {% endfor %}
+        <button type="submit">Register</button>
+    </form>      
+    </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
